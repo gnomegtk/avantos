@@ -1,0 +1,92 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background: #f4f4f4;
+  padding: 20px;
+  border-right: 1px solid #ccc;
+  overflow-y: auto;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.form-list {
+  list-style: none;
+  padding: 0;
+}
+
+.form-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.form-list li.selected {
+  background-color: #d0eaff;
+}
+
+.prefill-mapping ul {
+  list-style: none;
+  padding: 0;
+}
+
+.prefill-field {
+  margin-bottom: 10px;
+}
+
+.prefill-field .field-name {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.clear-btn {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: #fff;
+  padding: 20px;
+  width: 400px;
+  border-radius: 5px;
+}
+
+.modal-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.modal-section li {
+  padding: 5px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.close-btn {
+  margin-top: 10px;
+}
+
