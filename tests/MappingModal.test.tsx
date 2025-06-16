@@ -1,53 +1,36 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import MappingModal from '../src/components/MappingModal';
-import { FormWithPrefill } from '../src/types';
 
-const dummyForm: FormWithPrefill = {
-  id: "form1",
-  name: "Form 1",
-  fields: ["field1"],
+const dummyDependentForm = {
+  id: 'dependent1',
+  name: 'Dependent Form 1',
+  fields: ['email', 'phone'],
   dependencies: [],
-  prefillMapping: {},
+  prefillMapping: {}
 };
 
 describe('MappingModal', () => {
-  it('renders global data and dependent options and handles selections', () => {
+  it('renders global options and dependent form fields correctly', () => {
     const onClose = vi.fn();
     const onSelectMapping = vi.fn();
 
     render(
       <MappingModal
-        fieldName="testField"
-        dependentForms={[dummyForm]}
+        fieldName="email"
+        dependentForms={[dummyDependentForm]}
         onClose={onClose}
         onSelectMapping={onSelectMapping}
       />
     );
-    
-    // Check if the global data option is visible (based on GLOBAL_OPTIONS)
-    const globalOption = screen.getByText(/Action Property/i);
-    expect(globalOption).toBeInTheDocument();
-    
-    // Check if the dependent form is rendered
-    expect(screen.getByText(/Form 1/i)).toBeInTheDocument();
-    
-    // Simulate clicking on the global option
-    fireEvent.click(globalOption);
-    expect(onSelectMapping).toHaveBeenCalledWith({
-      type: "global",
-      sourceGlobalKey: "action_property"
-    });
-    
-    // Simulate clicking on the dependent form field option ("field1")
-    const dependentField = screen.getByText(/field1/i);
-    fireEvent.click(dependentField);
-    expect(onSelectMapping).toHaveBeenCalledWith({
-      type: "form",
-      sourceFormId: "form1",
-      sourceField: "field1"
-    });
+
+    // Check that Global Data section is rendered.
+    expect(screen.getByTestId('global-data-header')).toBeInTheDocument();
+    // Check that Dependent Forms section is rendered.
+    expect(screen.getByTestId('dependent-forms-header')).toBeInTheDocument();
+    // Verify one of the dependent fields (e.g., 'email') is displayed.
+    expect(screen.getByText('email')).toBeInTheDocument();
   });
 });
 

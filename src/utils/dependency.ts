@@ -1,19 +1,19 @@
-// src/utils/dependency.ts
-
 import { FormWithPrefill } from '../types';
 
-// Recursively calculate the dependent forms (direct and transitive)
 export const getDependentForms = (
   form: FormWithPrefill,
   allForms: FormWithPrefill[]
 ): FormWithPrefill[] => {
   const result: Record<string, FormWithPrefill> = {};
+  const visited = new Set<string>(); // Tracks visited forms to prevent cycles
 
   const visit = (formId: string) => {
+    if (visited.has(formId) || formId === form.id) return; // Prevent infinite loops
+    visited.add(formId);
+
     const depForm = allForms.find((f) => f.id === formId);
-    if (depForm && !result[depForm.id]) {
+    if (depForm) {
       result[depForm.id] = depForm;
-      // Se "dependencies" estiver indefinido, usamos um array vazio
       (depForm.dependencies || []).forEach(visit);
     }
   };

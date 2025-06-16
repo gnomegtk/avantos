@@ -1,0 +1,87 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Snapshot Tests > MappingModal matches snapshot 1`] = `
+<div>
+  <div
+    class="modal-overlay"
+    data-testid="modal-overlay"
+    tabindex="-1"
+  >
+    <div
+      class="modal"
+      role="dialog"
+    >
+      <h3>
+        Select data element to map for "
+        email
+        "
+      </h3>
+      <input
+        placeholder="Search..."
+        type="text"
+        value=""
+      />
+      <div
+        class="modal-section"
+      >
+        <h4
+          data-testid="global-data-header"
+        >
+          Global Data
+        </h4>
+        <ul>
+          <li
+            class=""
+            role="button"
+            tabindex="0"
+          >
+            Action Property
+          </li>
+          <li
+            class=""
+            role="button"
+            tabindex="0"
+          >
+            Client Organisation Property
+          </li>
+        </ul>
+      </div>
+      <div
+        class="modal-section"
+      >
+        <h4
+          data-testid="dependent-forms-header"
+        >
+          Dependent Forms
+        </h4>
+        <ul>
+          <li>
+            <strong>
+              Form 1
+            </strong>
+            <ul>
+              <li
+                role="button"
+                tabindex="0"
+              >
+                email
+              </li>
+              <li
+                role="button"
+                tabindex="0"
+              >
+                name
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <button
+        class="close-btn"
+      >
+        CANCEL
+      </button>
+    </div>
+  </div>
+</div>
+`;

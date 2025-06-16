@@ -1,5 +1,4 @@
-// src/components/PrefillMapping.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FormWithPrefill, PrefillMapping as PrefillMappingType } from '../types';
 import MappingModal from './MappingModal';
 import { getDependentForms } from '../utils/dependency';
@@ -14,12 +13,20 @@ interface PrefillMappingProps {
   ) => void;
 }
 
-const PrefillMapping: React.FC<PrefillMappingProps> = ({
-  form,
-  allForms,
-  onUpdateMapping,
-}) => {
+const PrefillMapping: React.FC<PrefillMappingProps> = ({ form, allForms, onUpdateMapping }) => {
   const [modalField, setModalField] = useState<string | null>(null);
+  const [validationErrors, setValidationErrors] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    const requiredFields = form.field_schema?.required || [];
+    const errors: Record<string, boolean> = {};
+    requiredFields.forEach((field) => {
+      if (!form.prefillMapping?.[field]) {
+        errors[field] = true;
+      }
+    });
+    setValidationErrors(errors);
+  }, [form]);
 
   const handleOpenModal = (field: string) => {
     setModalField(field);
@@ -36,22 +43,21 @@ const PrefillMapping: React.FC<PrefillMappingProps> = ({
     }
   };
 
-  // Utilize a função getDependentForms (válida mesmo se dependencies for vazio)
   const dependentForms = getDependentForms(form, allForms);
 
   return (
     <div className="prefill-mapping">
       <h2>Prefill fields for {form.name}</h2>
       <ul>
-        {(form.fields || []).map((field) => {
-          const mapping =
-            (form.prefillMapping || {})[field] || null;
+        {(form.fields.filter(Boolean) as string[]).map((field) => {
+          const mapping = form.prefillMapping?.[field] || null;
+          const isRequired = form.field_schema?.required?.includes(field);
+          const hasError = validationErrors[field];
           return (
             <li key={field} className="prefill-field">
               <span
                 className="field-name"
                 onClick={() => {
-                  // Se o campo não tiver mapeamento, abre o modal
                   if (!mapping) handleOpenModal(field);
                 }}
               >
@@ -64,13 +70,12 @@ const PrefillMapping: React.FC<PrefillMappingProps> = ({
                     : `Global: ${mapping.sourceGlobalKey}`}
                 </span>
               ) : (
-                <span className="no-mapping"> (Click to map)</span>
+                <span className="no-mapping">
+                  (Click to map){hasError ? <span className="error-text"> {field} is required</span> : null}
+                </span>
               )}
               {mapping && (
-                <button
-                  className="clear-btn"
-                  onClick={() => onUpdateMapping(form.id, field, null)}
-                >
+                <button className="clear-btn" onClick={() => onUpdateMapping(form.id, field, null)}>
                   X
                 </button>
               )}
